@@ -3,5 +3,5 @@ pT.DecideName();
 
 while (pT.GetAlive() == true){
     pT.Tick();
-    
 }
+pT.Tick();

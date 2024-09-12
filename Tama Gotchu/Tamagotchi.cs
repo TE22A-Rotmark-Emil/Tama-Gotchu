@@ -16,17 +16,19 @@ public class Tamagotchi{
         timeBorn = DateTime.Now.ToString();
     }
 
-    private string TrimName(string name, bool capitalLetters){
-        name = name.Replace("1", "");
-        name = name.Replace("2", "");
-        name = name.Replace("3", "");
-        name = name.Replace("4", "");
-        name = name.Replace("5", "");
-        name = name.Replace("6", "");
-        name = name.Replace("7", "");
-        name = name.Replace("8", "");
-        name = name.Replace("9", "");
-        name = name.Replace("0", "");
+    private string TrimName(string name, bool capitalLetters, bool isInt){
+        if (!isInt){
+            name = name.Replace("1", "");
+            name = name.Replace("2", "");
+            name = name.Replace("3", "");
+            name = name.Replace("4", "");
+            name = name.Replace("5", "");
+            name = name.Replace("6", "");
+            name = name.Replace("7", "");
+            name = name.Replace("8", "");
+            name = name.Replace("9", "");
+            name = name.Replace("0", "");
+        }
         name = name.Replace("§", "");
         name = name.Replace("!", "");
         name = name.Replace("\"", "");
@@ -53,7 +55,7 @@ public class Tamagotchi{
         Console.WriteLine("Name your Tamagotchi!");
         do{
             tamagotchiName = Console.ReadLine();
-            tamagotchiName = TrimName(tamagotchiName, true);
+            tamagotchiName = TrimName(tamagotchiName, true, false);
             if (tamagotchiName.Length < 2){
                 Console.WriteLine("tamagotchi name must be 3 characters or longer");
             }
@@ -82,7 +84,7 @@ public class Tamagotchi{
             Console.WriteLine($"{Name} cannot speak! Would you like to teach them some words instead?");
             do{
                 answer = Console.ReadLine();
-                answer = TrimName(answer, false);
+                answer = TrimName(answer, false, false);
                 if (answer == "no"){
                     Console.WriteLine("lmao???");
                     Tick();
@@ -105,7 +107,7 @@ public class Tamagotchi{
         Console.WriteLine($"What word would you like to teach {Name}?");
         do{
             word = Console.ReadLine();
-            word = TrimName(word, false);
+            word = TrimName(word, false, false);
             if (word.Length < 1 && word.Length > 45){
                 Console.WriteLine("Invalid Word");
             }
@@ -123,14 +125,44 @@ public class Tamagotchi{
             if (hunger > 9) {Console.Write("They were too hungry to move. ");}
             if (boredom > 9) {Console.Write("They were too bored to see. ");}
             Console.WriteLine();
-            Console.WriteLine($"{Name}");
+            Console.WriteLine($"- | {Name.ToUpper()} | -");
             timeDied = DateTime.Now.ToString();
             Console.WriteLine($"{timeBorn} - {timeDied}");
             Console.ReadLine();
         }else{
-            
+            Console.WriteLine("What would you like to do?");
+            Console.WriteLine($"1. Feed {Name}");
+            Console.WriteLine($"2. Talk to {Name}");
+            Console.WriteLine($"3. Teach {Name} something");
+            Console.WriteLine($"4. Do nothing");
+            string answer;
+            List<string> validAnswers = new(){
+                "1", "2", "3", "4",
+                "one", "two", "three", "four",
+                "feed", "talk", "teach", "nothing",
+                "food", "speak", "teacher", "no"};
+            do{
+               answer = Console.ReadLine();
+               answer = TrimName(answer, false, true);
+               if (!validAnswers.Contains(answer)){
+                    answer = TrimName(answer, false, false);
+                    if (!validAnswers.Contains(answer)){
+                        Console.WriteLine("Please write a valid response");
+                    }
+               }
+            }while(!validAnswers.Contains(answer));
+            if (answer == "1" || answer == "one" || answer == "feed" || "answer" == "food"){
+                Feed();
+            }
+            else if (answer == "2" || answer == "two" || answer == "talk" || answer == "speak"){
+                Hi();
+            }
+            else if (answer == "3" || answer == "three" || answer == "teach" || answer == "teacher"){
+                Teach();
+            }
         }
-        
+        boredom++;
+        hunger++;
     }
 
     public void PrintStats(){
