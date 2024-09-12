@@ -127,7 +127,7 @@ public class Tamagotchi{
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("Hunger: ");
         Severity(hunger);
-        Console.ForegroundColor = ConsoleColor.Blue;
+        Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Boredom: ");
         Severity(boredom);
 
