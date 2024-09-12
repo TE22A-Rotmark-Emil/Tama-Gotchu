@@ -171,6 +171,9 @@ public class Tamagotchi{
             else if (answer == "3" || answer == "three" || answer == "teach" || answer == "teacher"){
                 Teach();
             }
+            else{
+                neglectedBoredom++;
+            }
         }
 
         boredom++;
