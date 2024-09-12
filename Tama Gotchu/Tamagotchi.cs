@@ -1,7 +1,9 @@
 public class Tamagotchi{
     private int hunger;
+    private int death;
     private bool satiated = false;
     private int boredom;
+    private int neglectedBoredom = 0;
     private List<string> words = new();
     private bool isAlive = true;
     public string Name;
@@ -10,6 +12,7 @@ public class Tamagotchi{
 
     public Tamagotchi(){
         hunger = Random.Shared.Next(0, 3);
+        death = Random.Shared.Next(10, 15);
         boredom = Random.Shared.Next(0, 3);
         timeBorn = DateTime.Now.ToString();
     }
@@ -75,6 +78,7 @@ public class Tamagotchi{
             Console.WriteLine($"{Name} feels less hungry!");
         }
         ReduceBoredom(1);
+        neglectedBoredom++;
     }
 
     public void Hi(){
@@ -97,6 +101,7 @@ public class Tamagotchi{
         }
         else{
             ReduceBoredom(Random.Shared.Next(2, 3));
+            neglectedBoredom = 0;
             Console.WriteLine("");
             Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"{Name} says {words[Random.Shared.Next(0, words.Count())]}");
@@ -117,6 +122,7 @@ public class Tamagotchi{
             }
         } while (word.Length < 1 && word.Length > 45);
         ReduceBoredom(Random.Shared.Next(-1, 2));
+        neglectedBoredom++;
         TeachWord(word);
     }
 
@@ -166,13 +172,11 @@ public class Tamagotchi{
                 Teach();
             }
         }
+
         boredom++;
-        if (!satiated){
-            hunger++;
-        }
-        else{
-            satiated = false;
-        }
+        if (neglectedBoredom > 2 && boredom + 1 != death) {boredom++;}
+
+        if (!satiated) {hunger++;} else {satiated = false;}
     }
 
     public void PrintStats(){
@@ -186,21 +190,21 @@ public class Tamagotchi{
         Console.ForegroundColor = ConsoleColor.Gray;
 
         void Severity(int value){
-            if (value < 10){
+            if (value < death){
                 switch(value){
-                    case 7: case 8: case 9:
+                    case int n when n >= Convert.ToInt32(0.75*death):
                     Console.ForegroundColor = ConsoleColor.Red;
                     Console.Write(value);
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine(" (CRITICAL)");
                     break;
-                    case 4: case 5: case 6:
+                    case int n when n < 0.75*death && n >= 0.4*death:
                     Console.ForegroundColor = ConsoleColor.Yellow;
                     Console.Write(value);
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine(" (NORMAL)");
                     break;
-                    case 1: case 2: case 3:
+                    case int n when n < 0.4*death && n > 0:
                     Console.ForegroundColor = ConsoleColor.Green;
                     Console.Write(value);
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
@@ -215,12 +219,13 @@ public class Tamagotchi{
                     default:
                     Console.ForegroundColor = ConsoleColor.Gray;
                     Console.WriteLine($"{value} (WHAT)");
+                    Console.WriteLine($"{death*0.7} {death*0.4}");
                     break;
                 }
             }
             else{
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write(10);
+                Console.Write(value);
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine(" (DEATH)");
             }
@@ -228,7 +233,7 @@ public class Tamagotchi{
     }
 
     public bool GetAlive() {
-        if (boredom > 9 || hunger > 9){isAlive = false;}
+        if (boredom >= death || hunger >= death) {isAlive = false;}
         return isAlive;
     }
 
