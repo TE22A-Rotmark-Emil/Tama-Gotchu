@@ -1,5 +1,6 @@
 public class Tamagotchi{
     private int hunger;
+    private bool satiated = false;
     private int boredom;
     private List<string> words = new(){""};
     private bool isAlive = true;
@@ -10,7 +11,7 @@ public class Tamagotchi{
         boredom = Random.Shared.Next(0, 3);
     }
 
-    private string TrimName(string name){
+    private string TrimName(string name, bool capitalLetters){
         name = name.Replace("1", "");
         name = name.Replace("2", "");
         name = name.Replace("3", "");
@@ -36,6 +37,9 @@ public class Tamagotchi{
         name = name.Replace("`", "");
         name = name.Replace("´", "");
         name = name.Replace("'", "");
+        if (capitalLetters == false){
+            name = name.ToLower();
+        }
         return name;
     }
 
@@ -44,7 +48,7 @@ public class Tamagotchi{
         Console.WriteLine("Name your Tamagotchi!");
         do{
             tamagotchiName = Console.ReadLine();
-            tamagotchiName = TrimName(tamagotchiName);
+            tamagotchiName = TrimName(tamagotchiName, true);
             if (tamagotchiName.Length < 2){
                 Console.WriteLine("tamagotchi name must be 3 characters or longer");
             }
@@ -56,11 +60,25 @@ public class Tamagotchi{
     }
 
     public void Feed(){
-
+        if (hunger - 3 < 0){
+            hunger = 0;
+            satiated = true;
+            Console.WriteLine($"{Name} is no longer hungry!");
+        }
+        else{
+            hunger -= 3;
+            Console.WriteLine($"{Name} feels better! Their hunger is now at {hunger}");
+        }
     }
 
     public void Hi(){
-
+        if (words.Count == 0){
+            string answer;
+            Console.WriteLine($"{Name} cannot speak! Would you like to teach them some words instead?");
+            do{
+                answer = Console.ReadLine();
+            }while(answer != "yes" && answer != "no");
+        }
     }
 
     public void Teach(string word){
