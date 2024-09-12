@@ -52,5 +52,7 @@ public class Tamagotchi{
         return isAlive;
     }
 
-    private void ReduceBoredom();
+    private void ReduceBoredom(){
+        
+    }
 }
