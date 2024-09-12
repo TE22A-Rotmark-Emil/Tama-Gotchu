@@ -166,7 +166,7 @@ public class Tamagotchi{
             }
             else{
                 Console.ForegroundColor = ConsoleColor.DarkGray;
-                Console.Write(hunger);
+                Console.Write(10);
                 Console.ForegroundColor = ConsoleColor.Black;
                 Console.WriteLine(" (DEATH)");
             }
