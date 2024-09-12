@@ -74,8 +74,9 @@ public class Tamagotchi{
         }
         else{
             hunger -= 3;
-            Console.WriteLine($"{Name} feels better! Their hunger is now at {hunger}");
+            Console.WriteLine($"{Name} feels less hungry!");
         }
+        ReduceBoredom(1);
     }
 
     public void Hi(){
@@ -117,6 +118,7 @@ public class Tamagotchi{
                 Console.WriteLine("Invalid Word");
             }
         } while (word.Length < 1 && word.Length > 45);
+        ReduceBoredom(Random.Shared.Next(-1, 2));
         TeachWord(word);
     }
 
