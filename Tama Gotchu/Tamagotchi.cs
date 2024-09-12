@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 public class Tamagotchi{
     private int hunger;
     private bool satiated = false;
@@ -91,7 +93,7 @@ public class Tamagotchi{
             }
         }
         else{
-
+            ReduceBoredom(2);
         }
     }
 
@@ -111,18 +113,69 @@ public class Tamagotchi{
     private void TeachWord(string word) {words.Add(word); Console.WriteLine($"{Name} can now say {word}");}
     
     public void Tick(){
-
+        PrintStats();
+        if (GetAlive() == false){
+            
+        }else{
+            
+        }
+        
     }
 
     public void PrintStats(){
+        Console.WriteLine($"--- {Name} ---");
+        Console.ForegroundColor = ConsoleColor.Magenta;
+        Console.Write("Hunger: ");
+        if (hunger < 10){
+            Severity(hunger);
+        }
+        else{
+            Console.ForegroundColor = ConsoleColor.DarkGray;
+            Console.Write(hunger);
+        }
+        Console.ForegroundColor = ConsoleColor.DarkBlue;
+        Console.Write("Boredom: ");
 
+        void Severity(int value){
+            switch(value){
+                case 7: case 8: case 9:
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Write(value);
+                Console.ForegroundColor = ConsoleColor.DarkRed;
+                Console.WriteLine(" (CRITICAL)");
+                break;
+                case 4: case 5: case 6:
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                Console.Write(value);
+                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                Console.WriteLine(" (NORMAL)");
+                break;
+                case 1: case 2: case 3:
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.Write(value);
+                Console.ForegroundColor = ConsoleColor.DarkGreen;
+                Console.WriteLine(" (GOOD)");
+                break;
+                case 0:
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.Write(value);
+                Console.ForegroundColor = ConsoleColor.DarkCyan;
+                Console.WriteLine(" (EXCELLENT)");
+                break;
+                default:
+                Console.ForegroundColor = ConsoleColor.Gray;
+                Console.WriteLine($"{value} (WHAT)");
+                break;
+            }
+        }
     }
 
-    public bool GetAlive(){
+    public bool GetAlive() {
+        if (boredom > 9 || hunger > 9){isAlive = false;}
         return isAlive;
     }
 
-    private void ReduceBoredom(){
-
+    private void ReduceBoredom(int amount){
+        boredom -= amount;
     }
 }
