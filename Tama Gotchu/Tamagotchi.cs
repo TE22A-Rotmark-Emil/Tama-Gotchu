@@ -197,25 +197,25 @@ public class Tamagotchi{
                 switch(value){
                     case int n when n >= Convert.ToInt32(0.75*death):
                     Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write(value);
+                    Console.Write($"{value}/{death}");
                     Console.ForegroundColor = ConsoleColor.DarkRed;
                     Console.WriteLine(" (CRITICAL)");
                     break;
                     case int n when n < 0.75*death && n >= 0.4*death:
                     Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write(value);
+                    Console.Write($"{value}/{death}");
                     Console.ForegroundColor = ConsoleColor.DarkYellow;
                     Console.WriteLine(" (NORMAL)");
                     break;
                     case int n when n < 0.4*death && n > 0:
                     Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write(value);
+                    Console.Write($"{value}/{death}");
                     Console.ForegroundColor = ConsoleColor.DarkGreen;
                     Console.WriteLine(" (GOOD)");
                     break;
                     case 0:
                     Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write(value);
+                    Console.Write($"{value}/{death}");
                     Console.ForegroundColor = ConsoleColor.DarkCyan;
                     Console.WriteLine(" (EXCELLENT)");
                     break;
