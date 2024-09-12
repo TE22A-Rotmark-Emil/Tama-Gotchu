@@ -1,6 +1,7 @@
-﻿Tamagotchi playerTamagotchi = new();
-playerTamagotchi.DecideName();
-Console.WriteLine(playerTamagotchi.Name);
-Console.ReadLine();
-playerTamagotchi.PrintStats();
-Console.ReadLine();
+﻿Tamagotchi pT = new();
+pT.DecideName();
+
+while (pT.GetAlive() == true){
+    pT.Tick();
+    
+}

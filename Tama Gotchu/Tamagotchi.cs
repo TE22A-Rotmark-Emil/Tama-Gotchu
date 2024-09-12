@@ -7,10 +7,13 @@ public class Tamagotchi{
     private List<string> words = new(){""};
     private bool isAlive = true;
     public string Name;
+    private string timeBorn;
+    private string timeDied;
 
     public Tamagotchi(){
         hunger = Random.Shared.Next(0, 3);
         boredom = Random.Shared.Next(0, 3);
+        timeBorn = DateTime.Now.ToString();
     }
 
     private string TrimName(string name, bool capitalLetters){
@@ -115,7 +118,15 @@ public class Tamagotchi{
     public void Tick(){
         PrintStats();
         if (GetAlive() == false){
-            
+            Console.WriteLine($"{Name} has died. Paramedics arrived at the scene but it was too late.");
+            Console.WriteLine("They groveled. Screaming. 'Someone, please! Help me!' But no one could hear them.");
+            if (hunger > 9) {Console.Write("They were too hungry to move. ");}
+            if (boredom > 9) {Console.Write("They were too bored to see. ");}
+            Console.WriteLine();
+            Console.WriteLine($"{Name}");
+            timeDied = DateTime.Now.ToString();
+            Console.WriteLine($"{timeBorn} - {timeDied}");
+            Console.ReadLine();
         }else{
             
         }
