@@ -130,6 +130,7 @@ public class Tamagotchi{
         Console.ForegroundColor = ConsoleColor.White;
         Console.Write("Boredom: ");
         Severity(boredom);
+        Console.ForegroundColor = ConsoleColor.Gray;
 
         void Severity(int value){
             if (value < 10){
