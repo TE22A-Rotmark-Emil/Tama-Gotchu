@@ -77,13 +77,38 @@ public class Tamagotchi{
             Console.WriteLine($"{Name} cannot speak! Would you like to teach them some words instead?");
             do{
                 answer = Console.ReadLine();
+                answer = TrimName(answer, false);
+                if (answer == "no"){
+                    Console.WriteLine("lmao???");
+                    Tick();
+                }
+                if (answer != "yes" && answer != "no"){
+                    Console.WriteLine("Write yes or no");
+                }
             }while(answer != "yes" && answer != "no");
+            if (answer == "yes"){
+                Teach();
+            }
+        }
+        else{
+
         }
     }
 
-    public void Teach(string word){
-
+    public void Teach(){
+        string word;
+        Console.WriteLine($"What word would you like to teach {Name}?");
+        do{
+            word = Console.ReadLine();
+            word = TrimName(word, false);
+            if (word.Length < 1 && word.Length > 45){
+                Console.WriteLine("Invalid Word");
+            }
+        } while (word.Length < 1 && word.Length > 45);
+        TeachWord(word);
     }
+
+    private void TeachWord(string word) {words.Add(word); Console.WriteLine($"{Name} can now say {word}");}
     
     public void Tick(){
 
