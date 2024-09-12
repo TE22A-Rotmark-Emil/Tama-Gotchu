@@ -1,5 +1,3 @@
-using System.Diagnostics;
-
 public class Tamagotchi{
     private int hunger;
     private bool satiated = false;
