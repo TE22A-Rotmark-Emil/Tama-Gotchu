@@ -81,7 +81,7 @@ public class Tamagotchi{
         neglectedBoredom++;
     }
 
-    public void Hi(){
+    public void Talk(){
         if (words.Count == 0){
             string answer;
             Console.WriteLine($"{Name} cannot speak! Would you like to teach them some words instead?");
@@ -166,7 +166,7 @@ public class Tamagotchi{
                 Feed();
             }
             else if (answer == "2" || answer == "two" || answer == "talk" || answer == "speak"){
-                Hi();
+                Talk();
             }
             else if (answer == "3" || answer == "three" || answer == "teach" || answer == "teacher"){
                 Teach();
