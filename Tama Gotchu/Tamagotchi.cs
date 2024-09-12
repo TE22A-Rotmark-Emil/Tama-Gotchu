@@ -21,9 +21,6 @@ public class Tamagotchi{
             else if (tamagotchiName.Length > 16){
                 Console.WriteLine("tamagotchi name must not exceed 16 characters");
             }
-            else{
-                break;
-            }
         } while (tamagotchiName.Length < 2 && tamagotchiName.Length > 16);
         Name = tamagotchiName;
     }
@@ -53,6 +50,6 @@ public class Tamagotchi{
     }
 
     private void ReduceBoredom(){
-        
+
     }
 }
