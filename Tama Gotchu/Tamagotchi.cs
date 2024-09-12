@@ -1,4 +1,8 @@
-public class Tamagotchi{
+using System.Drawing;
+using System.Linq;
+
+public class Tamagotchi
+{
     #region Definitions
     private int hunger; // variable that, if it reaches "death," will kill the entity. increments by 1 every turn (except where otherwise specified)
     private int death; // variable that decides when an entity dies. is set at random below
@@ -13,7 +17,8 @@ public class Tamagotchi{
     #endregion
 
     #region Construct
-    public Tamagotchi(){
+    public Tamagotchi()
+    {
         hunger = Random.Shared.Next(0, 3); // following variables are randomised to add flavour to the game
         death = Random.Shared.Next(10, 15);
         boredom = Random.Shared.Next(0, 3);
@@ -22,58 +27,52 @@ public class Tamagotchi{
     #endregion
 
     #region Methods
-    private string TrimWord(string word, bool capitalLetters, bool isInt){ // method used to remove junk from a player's responses
-        if (!isInt){ // third required variable of the method. If the inserted word is not an integer it will remove all integers from the response
-            word = word.Replace("1", "");
-            word = word.Replace("2", "");
-            word = word.Replace("3", "");
-            word = word.Replace("4", "");
-            word = word.Replace("5", "");
-            word = word.Replace("6", "");
-            word = word.Replace("7", "");
-            word = word.Replace("8", "");
-            word = word.Replace("9", "");
-            word = word.Replace("0", "");
+    private string TrimWord(string word, bool capitalLetters, bool isInt)
+    { // method used to remove junk from a player's responses
+        char[] integers = "0123456789".ToArray();
+        char[] junkies = "§½!\"#¤%&/()=?`´' \t,.-;:_<>|¨^*\\@£$€{}[]".ToArray();
+        if (!isInt)
+        {
+            foreach (char integer in integers)
+            {
+                word = word.Replace(integer.ToString(), "");
+            }
         }
-        word = word.Replace("§", ""); // below is various junk you could accidentally type
-        word = word.Replace("!", "");
-        word = word.Replace("\"", "");
-        word = word.Replace("#", "");
-        word = word.Replace("¤", "");
-        word = word.Replace("%", "");
-        word = word.Replace("&", "");
-        word = word.Replace("/", "");
-        word = word.Replace("(", "");
-        word = word.Replace(")", "");
-        word = word.Replace("=", "");
-        word = word.Replace("?", "");
-        word = word.Replace("`", "");
-        word = word.Replace("´", "");
-        word = word.Replace("'", "");
-        if (capitalLetters == false){ // makes sure that the answer isn't case sensitive in instances where that is important. In other places this is not important (such as when creating the name of your character)
+        foreach (char junk in junkies)
+        {
+            word = word.Replace(junk.ToString(), "");
+        }
+        if (capitalLetters == false)
+        { // makes sure that the answer isn't case sensitive in instances where that is important. In other places this is not important (such as when creating the name of your character)
             word = word.ToLower();
         }
         return word;
     }
 
-    public void DecideName(){ // method used to create your character's name
+    public void DecideName()
+    { // method used to create your character's name
         string tamagotchiName;
         Console.WriteLine("Name your Tamagotchi!"); // gets called once since it is outside of the loop
-        do{
+        do
+        {
             tamagotchiName = Console.ReadLine();
             tamagotchiName = TrimWord(tamagotchiName, true, false); // trims, read above
-            if (tamagotchiName.Length < 2){ // explained below. some interactions could look excessively silly with tiny names
+            if (tamagotchiName.Length < 3 && tamagotchiName.ToLower() != "wu")
+            { // explained below. some interactions could look excessively silly with tiny names
                 Console.WriteLine("tamagotchi name must be 3 characters or longer");
             }
-            else if (tamagotchiName.Length > 16){ // explained below. some interactions could look excessively silly with long names
+            else if (tamagotchiName.Length > 16)
+            { // explained below. some interactions could look excessively silly with long names
                 Console.WriteLine("tamagotchi name must not exceed 16 characters");
             }
-        } while (tamagotchiName.Length < 2 && tamagotchiName.Length > 16); // forces the loop until a name is between 3-16 characters
+        } while (tamagotchiName.ToLower() != "wu" && tamagotchiName.Length < 3 || tamagotchiName.Length > 16); // forces the loop until a name is between 3-16 characters
         Name = tamagotchiName; // sets the character's name to the chosen name of the player
     }
 
-    public void Feed(){ // "feed" method. reduces the entity's hunger by a flat 3 (effectively 2 since the game tick removes 1)
-        if (hunger - 3 < 0){ // here to ensure that the hunger variable never reaches a negative number
+    public void Feed()
+    { // "feed" method. reduces the entity's hunger by a flat 3 (effectively 2 since the game tick removes 1)
+        if (hunger - 3 < 0)
+        { // here to ensure that the hunger variable never reaches a negative number
             hunger = 0;
             satiated = true; // variable used to make feeding your pet less punishing. if you reach 0 hunger, you stay at 0 hunger for one turn.
             Console.WriteLine(""); // blank space to make it easier to read
@@ -82,7 +81,8 @@ public class Tamagotchi{
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("");
         }
-        else{ // runs if above statement returns false, such as if the entity's hunger is at 4
+        else
+        { // runs if above statement returns false, such as if the entity's hunger is at 4
             hunger -= 3;
             Console.WriteLine("");
             Console.ForegroundColor = ConsoleColor.DarkCyan;
@@ -94,25 +94,32 @@ public class Tamagotchi{
         neglectedBoredom++; // this does not count as "doing something fun" with your entity, so a variable "neglectedboredom" is incremented. read definitions for explanation
     }
 
-    public void Talk(){ // only boredom reducing element (officially, since "teach" can randomly make the entity less bored)
-        if (words.Count == 0){ // if you have never taught your entity a word, this will automatically run
+    public void Talk()
+    { // only boredom reducing element (officially, since "teach" can randomly make the entity less bored)
+        if (words.Count == 0)
+        { // if you have never taught your entity a word, this will automatically run
             string answer;
             Console.WriteLine($"{Name} cannot speak! Would you like to teach them some words instead?");
-            do{
+            do
+            {
                 answer = Console.ReadLine();
                 answer = TrimWord(answer, false, false);
-                if (answer == "no"){
+                if (answer == "no")
+                {
                     Console.WriteLine("lmao???"); // lmao
                 }
-                if (answer != "yes" && answer != "no"){
+                if (answer != "yes" && answer != "no")
+                {
                     Console.WriteLine("Write yes or no");
                 }
-            }while(answer != "yes" && answer != "no");
-            if (answer == "yes"){
+            } while (answer != "yes" && answer != "no");
+            if (answer == "yes")
+            {
                 Teach(); // automatically runs the teach method since the talk method's purpose is not to teach the entity a word
             }
         }
-        else{ // if the entity knows any word at all, this will automatically run
+        else
+        { // if the entity knows any word at all, this will automatically run
             ReduceBoredom(Random.Shared.Next(2, 3)); // has a random number because I'm just evil like that
             neglectedBoredom = 0; // resets neglected boredom, read the definitions section for an explanation as to what this does
             Console.WriteLine("");
@@ -123,36 +130,44 @@ public class Tamagotchi{
         }
     }
 
-    public void Teach(){ // teaches the entity a word of your chosing. literally anything. you can type anything. I have no safeguards
+    public void Teach()
+    { // teaches the entity a word of your chosing. literally anything. you can type anything. I have no safeguards
         string word;
         Console.WriteLine($"What word would you like to teach {Name}?");
-        do{
+        do
+        {
             word = Console.ReadLine();
             word = TrimWord(word, false, false);
-            if (word.Length < 1 && word.Length > 45){ // maximum word length is based on pneumonoultramicroscopicsilicovolcanoconiosis
+            if (word.Length < 1 || word.Length > 45)
+            { // maximum word length is based on pneumonoultramicroscopicsilicovolcanoconiosis
                 Console.WriteLine("Invalid Word");
             }
-        } while (word.Length < 1 && word.Length > 45);
+        } while (word.Length < 1 || word.Length > 45);
         ReduceBoredom(Random.Shared.Next(-1, 2)); // randomly makes you GAIN boredom because I'm kind of evil like that. randomly reduces boredom because I'm nice and kind like that
         neglectedBoredom++; // increments neglected boredom since this is technically never meant to give boredom
         TeachWord(word); // read "teachword" method explanation
     }
 
-    private void TeachWord(string word) {words.Add(word); Console.WriteLine($"{Name} can now say {word}");} // adds the word you typed to the entity's word list
-    
-    public void Tick(){ // game loop
+    private void TeachWord(string word) { words.Add(word); Console.WriteLine($"{Name} can now say {word}"); } // adds the word you typed to the entity's word list
+
+    public void Tick()
+    { // game loop
+        Console.Clear();
         PrintStats(); // automatically sends all information in print stats
-        if (GetAlive() == false){ // if the method getalive returns false, you met one of the lose conditions
+        if (GetAlive() == false)
+        { // if the method getalive returns false, you met one of the lose conditions
             Console.WriteLine($"{Name} has died. Paramedics arrived at the scene but it was too late.");
             Console.WriteLine("They groveled. Screaming. 'Someone, please! Help me!' But no one could hear them.");
-            if (hunger > 9) {Console.Write("They were too hungry to move. ");}
-            if (boredom > 9) {Console.Write("They were too bored to see. ");}
+            if (hunger > 9) { Console.Write("They were too hungry to move. "); }
+            if (boredom > 9) { Console.Write("They were too bored to see. "); }
             Console.WriteLine();
             Console.WriteLine($"- | {Name.ToUpper()} | -"); // GRAVESTONE MECHANIC
             timeDied = DateTime.Now.ToString(); // explained in definitions
             Console.WriteLine($"{timeBorn} - {timeDied}");
             Console.ReadLine();
-        }else{ // returns true if you aren't dead
+        }
+        else
+        { // returns true if you aren't dead
             Console.WriteLine("What would you like to do?");
             Console.WriteLine($"1. Feed {Name}");
             Console.WriteLine($"2. Talk to {Name}");
@@ -164,37 +179,45 @@ public class Tamagotchi{
                 "one", "two", "three", "four",
                 "feed", "talk", "teach", "nothing",
                 "food", "speak", "teacher", "no"};
-            do{
-               answer = Console.ReadLine();
-               answer = TrimWord(answer, false, true);
-               if (!validAnswers.Contains(answer)){
+            do
+            {
+                answer = Console.ReadLine();
+                answer = TrimWord(answer, false, true);
+                if (!validAnswers.Contains(answer))
+                {
                     answer = TrimWord(answer, false, false);
-                    if (!validAnswers.Contains(answer)){
+                    if (!validAnswers.Contains(answer))
+                    {
                         Console.WriteLine("Please write a valid response");
                     }
-               }
-            }while(!validAnswers.Contains(answer));
-            if (answer == "1" || answer == "one" || answer == "feed" || "answer" == "food"){
+                }
+            } while (!validAnswers.Contains(answer));
+            if (answer == "1" || answer == "one" || answer == "feed" || "answer" == "food")
+            {
                 Feed();
             }
-            else if (answer == "2" || answer == "two" || answer == "talk" || answer == "speak"){
+            else if (answer == "2" || answer == "two" || answer == "talk" || answer == "speak")
+            {
                 Talk();
             }
-            else if (answer == "3" || answer == "three" || answer == "teach" || answer == "teacher"){
+            else if (answer == "3" || answer == "three" || answer == "teach" || answer == "teacher")
+            {
                 Teach();
             }
-            else{ // only returns true if you choose the 4th option, aka "nothing" - increments boredom neglection because you aren't talking
+            else
+            { // only returns true if you choose the 4th option, aka "nothing" - increments boredom neglection because you aren't talking
                 neglectedBoredom++;
             }
         }
 
-        if (neglectedBoredom != 0) {boredom++;} // increments unless you just did an anti-boredom task, e.g. talking
-        if (neglectedBoredom > 2 && boredom + 1 != death) {boredom++;} // increments if it wouldn't kill you and if your neglect is 3 or higher
+        if (neglectedBoredom != 0) { boredom++; } // increments unless you just did an anti-boredom task, e.g. talking
+        if (neglectedBoredom > 2 && boredom + 1 != death) { boredom++; } // increments if it wouldn't kill you and if your neglect is 3 or higher
 
-        if (!satiated) {hunger++;} else {satiated = false;} // increments if you are not satiated (you reached 0 hunger last turn.) otherwise removes satiated
+        if (!satiated) { hunger++; } else { satiated = false; } // increments if you are not satiated (you reached 0 hunger last turn.) otherwise removes satiated
     }
 
-    public void PrintStats(){ // prints all relevant stats so that the player can see them and gauge a strategy
+    public void PrintStats()
+    { // prints all relevant stats so that the player can see them and gauge a strategy
         Console.WriteLine($"--- {Name} ---");
         Console.ForegroundColor = ConsoleColor.Magenta;
         Console.Write("Hunger: ");
@@ -204,40 +227,44 @@ public class Tamagotchi{
         Severity(boredom); // read severity below
         Console.ForegroundColor = ConsoleColor.Gray;
 
-        void Severity(int value){ // "severity" is an inline method which only runs in PrintStats. it gauges how close you are to a death value in all relevant stats, and chooses an appropriate colour and message for them.
-            if (value < death){
-                switch(value){
-                    case int n when n >= 0.75*death: // if your entity has a value that is between 75% and 99% of the death value
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.Write($"{value}/{death}");
-                    Console.ForegroundColor = ConsoleColor.DarkRed;
-                    Console.WriteLine(" (CRITICAL)");
-                    break;
-                    case int n when n < 0.75*death && n >= 0.4*death: // if your entity has a value between 74% and 40% of the death value
-                    Console.ForegroundColor = ConsoleColor.Yellow;
-                    Console.Write($"{value}/{death}");
-                    Console.ForegroundColor = ConsoleColor.DarkYellow;
-                    Console.WriteLine(" (NORMAL)");
-                    break;
-                    case int n when n < 0.4*death && n > 0: // if your entity has a value between 1% and 39%
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.Write($"{value}/{death}");
-                    Console.ForegroundColor = ConsoleColor.DarkGreen;
-                    Console.WriteLine(" (GOOD)");
-                    break;
+        void Severity(int value)
+        { // "severity" is an inline method which only runs in PrintStats. it gauges how close you are to a death value in all relevant stats, and chooses an appropriate colour and message for them.
+            if (value < death)
+            {
+                switch (value)
+                {
+                    case int n when n >= 0.75 * death: // if your entity has a value that is between 75% and 99% of the death value
+                        Console.ForegroundColor = ConsoleColor.Red;
+                        Console.Write($"{value}/{death}");
+                        Console.ForegroundColor = ConsoleColor.DarkRed;
+                        Console.WriteLine(" (CRITICAL)");
+                        break;
+                    case int n when n < 0.75 * death && n >= 0.4 * death: // if your entity has a value between 74% and 40% of the death value
+                        Console.ForegroundColor = ConsoleColor.Yellow;
+                        Console.Write($"{value}/{death}");
+                        Console.ForegroundColor = ConsoleColor.DarkYellow;
+                        Console.WriteLine(" (NORMAL)");
+                        break;
+                    case int n when n < 0.4 * death && n > 0: // if your entity has a value between 1% and 39%
+                        Console.ForegroundColor = ConsoleColor.Green;
+                        Console.Write($"{value}/{death}");
+                        Console.ForegroundColor = ConsoleColor.DarkGreen;
+                        Console.WriteLine(" (GOOD)");
+                        break;
                     case 0: // if your entity's value is literally 0
-                    Console.ForegroundColor = ConsoleColor.Cyan;
-                    Console.Write($"{value}/{death}");
-                    Console.ForegroundColor = ConsoleColor.DarkCyan;
-                    Console.WriteLine(" (EXCELLENT)");
-                    break;
+                        Console.ForegroundColor = ConsoleColor.Cyan;
+                        Console.Write($"{value}/{death}");
+                        Console.ForegroundColor = ConsoleColor.DarkCyan;
+                        Console.WriteLine(" (EXCELLENT)");
+                        break;
                     default: // secure just in case it ouputs an invalid value
-                    Console.ForegroundColor = ConsoleColor.Gray;
-                    Console.WriteLine($"{value} (WHAT)");
-                    break;
+                        Console.ForegroundColor = ConsoleColor.Gray;
+                        Console.WriteLine($"{value} (WHAT)");
+                        break;
                 }
             }
-            else{ // runs if you have a value equal to (or greater) than the death value
+            else
+            { // runs if you have a value equal to (or greater) than the death value
                 Console.ForegroundColor = ConsoleColor.DarkGray;
                 Console.Write(value);
                 Console.ForegroundColor = ConsoleColor.Black;
@@ -246,16 +273,20 @@ public class Tamagotchi{
         }
     }
 
-    public bool GetAlive() { // checks if syour entity is alive with the relevant values
-        if (boredom >= death || hunger >= death) {isAlive = false;}
+    public bool GetAlive()
+    { // checks if syour entity is alive with the relevant values
+        if (boredom >= death || hunger >= death) { isAlive = false; }
         return isAlive;
     }
 
-    private void ReduceBoredom(int amount){ // reduces boredom value based on the task completed
-        if (boredom - amount >= 0){
+    private void ReduceBoredom(int amount)
+    { // reduces boredom value based on the task completed
+        if (boredom - amount >= 0)
+        {
             boredom -= amount;
         }
-        else{ // failsafe just in case the sum of boredom - amount is a negative value
+        else
+        { // failsafe just in case the sum of boredom - amount is a negative value
             boredom = 0;
         }
     }
