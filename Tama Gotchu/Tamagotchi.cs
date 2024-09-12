@@ -4,7 +4,7 @@ public class Tamagotchi{
     private int hunger;
     private bool satiated = false;
     private int boredom;
-    private List<string> words = new(){""};
+    private List<string> words = new();
     private bool isAlive = true;
     public string Name;
     private string timeBorn;
@@ -87,7 +87,6 @@ public class Tamagotchi{
                 answer = TrimName(answer, false, false);
                 if (answer == "no"){
                     Console.WriteLine("lmao???");
-                    Tick();
                 }
                 if (answer != "yes" && answer != "no"){
                     Console.WriteLine("Write yes or no");
@@ -98,8 +97,14 @@ public class Tamagotchi{
             }
         }
         else{
-            ReduceBoredom(2);
+            ReduceBoredom(Random.Shared.Next(2, 3));
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"{Name} says {words[Random.Shared.Next(0, words.Count())]}");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("");
         }
+        Console.WriteLine(words.Count);
     }
 
     public void Teach(){
@@ -162,7 +167,12 @@ public class Tamagotchi{
             }
         }
         boredom++;
-        hunger++;
+        if (!satiated){
+            hunger++;
+        }
+        else{
+            satiated = false;
+        }
     }
 
     public void PrintStats(){
