@@ -71,11 +71,19 @@ public class Tamagotchi{
         if (hunger - 3 < 0){
             hunger = 0;
             satiated = true;
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.Cyan;
             Console.WriteLine($"{Name} is no longer hungry!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("");
         }
         else{
             hunger -= 3;
+            Console.WriteLine("");
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
             Console.WriteLine($"{Name} feels less hungry!");
+            Console.ForegroundColor = ConsoleColor.Gray;
+            Console.WriteLine("");
         }
         ReduceBoredom(1);
         neglectedBoredom++;
@@ -103,7 +111,7 @@ public class Tamagotchi{
             ReduceBoredom(Random.Shared.Next(2, 3));
             neglectedBoredom = 0;
             Console.WriteLine("");
-            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.ForegroundColor = ConsoleColor.Yellow;
             Console.WriteLine($"{Name} says {words[Random.Shared.Next(0, words.Count())]}");
             Console.ForegroundColor = ConsoleColor.Gray;
             Console.WriteLine("");
