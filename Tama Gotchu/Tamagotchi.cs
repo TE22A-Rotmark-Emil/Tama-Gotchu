@@ -1,6 +1,3 @@
-using System.Drawing;
-using System.Linq;
-
 public class Tamagotchi
 {
     #region Definitions
