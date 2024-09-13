@@ -173,6 +173,10 @@ public class Tamagotchi
             { // maximum word length is based on pneumonoultramicroscopicsilicovolcanoconiosis
                 Console.WriteLine("Invalid Word");
             }
+            if (oldWords.Contains(word) || newWords.Contains(word)){
+                Console.WriteLine("Duplicate Word!");
+                word = "";
+            }
         } while (word.Length < 1 || word.Length > 45);
         ReduceBoredom(Random.Shared.Next(1)); // randomly makes you GAIN boredom because I'm kind of evil like that. randomly reduces boredom because I'm nice and kind like that
         consecutiveFeed = 0;
