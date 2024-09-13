@@ -178,7 +178,7 @@ public class Tamagotchi
                 word = "";
             }
         } while (word.Length < 1 || word.Length > 45);
-        ReduceBoredom(Random.Shared.Next(1)); // randomly makes you GAIN boredom because I'm kind of evil like that. randomly reduces boredom because I'm nice and kind like that
+        ReduceBoredom(1);
         consecutiveFeed = 0;
         lastAction = "teach";
         TeachWord(word); // read "teachword" method explanation
