@@ -11,7 +11,6 @@ public class Tamagotchi
     private int boredom; // variable that, if it reaches "death," will kill the entity. increments by 1 every turn (except where otherwise specified)
     private int neglectedBoredom = 0; // variable that punishes the player for not doing fun activities with their entity (talking.) if this variable is above 3, boredom will increment twice (except where otherwise specified)
     private string lastAction = "nothing";
-    private List<string> words = new(); // word list of every word the entity knows, which is called during the "talk" method
     private List<string> newWords = new();
     private List<string> oldWords = new();
     private bool isAlive = true; // check for if the entity is alive. if it is not, you lose the game
@@ -103,7 +102,7 @@ public class Tamagotchi
 
     public void Talk()
     { // only boredom reducing element (officially, since "teach" can randomly make the entity less bored)
-        if (words.Count == 0)
+        if (newWords.Count == 0 && oldWords.Count == 0)
         { // if you have never taught your entity a word, this will automatically run
             string answer;
             Console.WriteLine($"{Name} cannot speak! Would you like to teach them some words instead?");
@@ -174,7 +173,6 @@ public class Tamagotchi
     }
 
     private void TeachWord(string word) {// adds the word you typed to the entity's word list
-        words.Add(word);
         newWords.Add(word);
         Console.WriteLine($"{Name} can now say {word}");
     }
